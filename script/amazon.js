@@ -1,5 +1,9 @@
 import { products } from "../data/products.js";
-import { cart } from "../data/cart.js";
+import { cart, addToCart } from "../data/cart.js";
+import {
+  e13_showAdded_prompt,
+  e13_useSelectorElementQuantity,
+} from "../exercise folder/e_13.js";
 
 let productHtml = "";
 
@@ -58,52 +62,22 @@ products.forEach((product) => {
 
 document.querySelector(".js-products-grid").innerHTML = productHtml;
 
-let timeOutId;
-function e13_addedPrompt_selector(productId) {
-  let quantity = document.querySelector(`.js-quantity-selector-${productId}`);
-  quantity = Number(quantity.value);
-  
-  clearTimeout(timeOutId);
+function updateCartQuantity() {
+  let cartQuantity = 0;
 
-  timeOutId = setTimeout(() => {
-    document
-      .querySelector(`.js-added-to-cart-${productId}`)
-      .classList.remove("show-added");
-  }, 1000 * 2);
+  cart.forEach((cartItem) => {
+    cartQuantity += cartItem.quantity;
+  });
 
-  document
-    .querySelector(`.js-added-to-cart-${productId}`)
-    .classList.add("show-added");
-
-  return quantity;
+  document.querySelector(".js-cart-quantity").innerHTML = cartQuantity;
 }
 
 document.querySelectorAll(".js-add-to-cart").forEach((button) => {
   button.addEventListener("click", () => {
     const { productId } = button.dataset;
-    let matchingItem;
-    const quantity = e13_addedPrompt_selector(productId);
-
-    cart.forEach((cartItem) => {
-      if (productId === cartItem.productId) {
-        matchingItem = cartItem;
-      }
-    });
-    if (matchingItem) {
-      matchingItem.quantity += quantity;
-    } else {
-      cart.push({
-        productId,
-        quantity,
-      });
-    }
-
-    let cartQuantity = 0;
-
-    cart.forEach((cartItem) => {
-      cartQuantity += cartItem.quantity;
-    });
-
-    document.querySelector(".js-cart-quantity").innerHTML = cartQuantity;
+    const quantity = e13_useSelectorElementQuantity(productId);
+    e13_showAdded_prompt(productId);
+    addToCart(productId, quantity);
+    updateCartQuantity();
   });
 });
