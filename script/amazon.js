@@ -4,6 +4,7 @@ import {
   e13_showAdded_prompt,
   e13_useSelectorElementQuantity,
 } from "../exercise folder/e_13.js";
+import { formatCurrency } from "./utils/money.js";
 
 let productHtml = "";
 
@@ -28,7 +29,7 @@ products.forEach((product) => {
       </div>
 
       <div class="product-price">
-        $${(product.priceCents / 100).toFixed(2)}
+        $${formatCurrency(product.priceCents)}
       </div>
 
       <div class="product-quantity-container">
