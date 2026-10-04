@@ -2,6 +2,7 @@ import {
   e14_calculateCartQuantity,
   cart,
   removeFromCart,
+  updateDeliveryOption,
 } from "../data/cart.js";
 import { products } from "../data/products.js";
 import { e14_codeUpdForUpateLink } from "../exercise folder/e_14.js";
@@ -100,11 +101,18 @@ function deliverOptionsHTML(matchingProduct, cartItem) {
     const isChecked = deliverOption.id === cartItem.deliveryOptionId;
 
     html += `
-      <div class="delivery-option">
-        <input type="radio"
+      <div class="delivery-option js-delivery-option"
+        data-product-id="${matchingProduct.id}"
+        data-delivery-option-id="${deliverOption.id}"
+      >
+
+        <input 
+          type="radio"
           ${isChecked ? "checked" : ""}
           class="delivery-option-input"
-          name="delivery-option-${matchingProduct.id}">
+          name="delivery-option-${matchingProduct.id}"
+        >
+
         <div>
           <div class="delivery-option-date">
             ${dateString}
@@ -133,8 +141,7 @@ document.querySelectorAll(".js-delete-link").forEach((link) => {
 
     container.remove();
     // ######################## exercise 14 #######################
-    e14_updateCartQuantity();
-    // ___________________________________________________________
+    e14_updateCartQuantity();  
   });
 });
 
@@ -144,3 +151,11 @@ export function e14_updateCartQuantity() {
     `${cartQuantity} items`;
 }
 e14_codeUpdForUpateLink();
+// ________________________________________________________________
+document.querySelectorAll(".js-delivery-option")
+  .forEach((element)=>{
+    element.addEventListener('click',()=>{
+      const { productId, deliveryOptionId } = element.dataset;
+      updateDeliveryOption(productId, deliveryOptionId);
+    })
+  })
