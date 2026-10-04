@@ -4,11 +4,14 @@ import {
   removeFromCart,
   updateDeliveryOption,
 } from "../../data/cart.js";
-import { products } from "../../data/products.js";
-import { e14_codeUpdForUpateLink } from "../../exercise folder/e_14.js"
+import { products, getProduct } from "../../data/products.js";
+import { e14_codeUpdForUpateLink } from "../../exercise folder/e_14.js";
 import { formatCurrency } from "../utils/money.js";
 import dayjs from "../../lib/day.js";
-import deliverOptions from "../../data/deliveryOptions.js"
+import {
+  deliverOptions,
+  getDeliveryOption,
+} from "../../data/deliveryOptions.js";
 
 export function renderOrderSummary() {
   e14_updateCartQuantity();
@@ -17,23 +20,10 @@ export function renderOrderSummary() {
 
   cart.forEach((cartItem) => {
     const productId = cartItem.productId;
-    let matchingProduct;
-
-    products.forEach((product) => {
-      if (product.id === productId) {
-        matchingProduct = product;
-      }
-    });
-
     const deliveryOptionId = cartItem.deliveryOptionId;
 
-    let deliveryOption;
-
-    deliverOptions.forEach((option) => {
-      if (option.id === deliveryOptionId) {
-        deliveryOption = option;
-      }
-    });
+    const matchingProduct = getProduct(productId);
+    const deliveryOption = getDeliveryOption(deliveryOptionId);
 
     const today = dayjs();
     const deliveryDate = today.add(deliveryOption.deliveryDays, "days");
@@ -142,7 +132,7 @@ export function renderOrderSummary() {
 
       container.remove();
 
-    // ######################## exercise 14 #######################
+      // ######################## exercise 14 #######################
       e14_updateCartQuantity();
     });
   });
