@@ -1,5 +1,5 @@
 import { e14_updateQuantity } from "../data/cart.js";
-import { e14_updateCartQuantity } from "../script/checkout.js";
+import { e14_updateCartQuantity } from "../script/chechout/orderSummary.js";
 
 function addClassToUpdateLInk() {
   document
