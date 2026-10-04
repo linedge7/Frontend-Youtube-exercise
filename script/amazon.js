@@ -1,5 +1,5 @@
 import { products } from "../data/products.js";
-import { cart, addToCart } from "../data/cart.js";
+import { cart, addToCart, e14_calculateCartQuantity } from "../data/cart.js";
 import {
   e13_showAdded_prompt,
   e13_useSelectorElementQuantity,
@@ -7,7 +7,7 @@ import {
 import { formatCurrency } from "./utils/money.js";
 
 let productHtml = "";
-
+updateCartQuantity();
 products.forEach((product) => {
   productHtml += `       
    <div class="product-container">
@@ -64,12 +64,10 @@ products.forEach((product) => {
 document.querySelector(".js-products-grid").innerHTML = productHtml;
 
 function updateCartQuantity() {
-  let cartQuantity = 0;
-
-  cart.forEach((cartItem) => {
-    cartQuantity += cartItem.quantity;
-  });
-
+  // ################ exercise 14 #####################
+  const cartQuantity = e14_calculateCartQuantity();
+  // __________________________________________________
+  
   document.querySelector(".js-cart-quantity").innerHTML = cartQuantity;
 }
 

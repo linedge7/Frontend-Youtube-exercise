@@ -1,4 +1,4 @@
-export let cart = JSON.parse(localStorage.getItem('cart')) || [
+export let cart = JSON.parse(localStorage.getItem("cart")) || [
   {
     productId: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
     quantity: 2,
@@ -42,5 +42,23 @@ export function removeFromCart(productId) {
   });
   cart = newCart;
 
+  saveToStorage();
+}
+
+// ################## exercise 14 #########################
+export function e14_calculateCartQuantity() {
+  let cartQuantity = 0;
+  cart.forEach((cartItem) => {
+    cartQuantity += cartItem.quantity;
+  });
+  return cartQuantity;
+}
+
+export function e14_updateQuantity(productId, newQuantity) {
+  cart.forEach((cartItem) => {
+    if (productId === cartItem.productId) {
+      cartItem.quantity = newQuantity;
+    }
+  });
   saveToStorage();
 }

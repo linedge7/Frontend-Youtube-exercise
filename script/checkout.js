@@ -1,7 +1,9 @@
-import { cart, removeFromCart } from "../data/cart.js";
+import { e14_calculateCartQuantity, cart, removeFromCart } from "../data/cart.js";
 import { products } from "../data/products.js";
+import { e14_codeUpdForUpateLink } from "../exercise folder/e_14.js";
 import { formatCurrency } from "./utils/money.js";
 
+e14_updateCartQuantity();
 let cartSummaryHTML = "";
 cart.forEach((cartItem) => {
   const productId = cartItem.productId;
@@ -31,11 +33,17 @@ cart.forEach((cartItem) => {
         </div>
         <div class="product-quantity">
           <span>
-            Quantity: <span class="quantity-label">${cartItem.quantity}</span>
+            Quantity: <span class="quantity-label js-quantity-label-${matchingProduct.id}">${cartItem.quantity}</span>
           </span>
-          <span class="update-quantity-link link-primary">
+          <span class="update-quantity-link link-primary js-update-quantity-link" data-product-id="${matchingProduct.id}">
             Update
           </span>
+
+
+          <input class="quantity-input js-quantity-input-${matchingProduct.id}">
+          <span class="save-quantity-link link-primary js-save-quantity-link" data-product-id="${matchingProduct.id}">Save</span>
+
+
           <span class="delete-quantity-link link-primary js-delete-link" data-product-id="${matchingProduct.id}">
             Delete
           </span>
@@ -103,5 +111,14 @@ document.querySelectorAll(".js-delete-link").forEach((link) => {
     );
 
     container.remove();
+    // ######################## exercise 14 #######################
+    e14_updateCartQuantity();
   });
 });
+
+export function e14_updateCartQuantity() {
+  const cartQuantity = e14_calculateCartQuantity();
+  document.querySelector(".js-checkout-quantity").innerHTML =
+    `${cartQuantity} items`;
+}
+e14_codeUpdForUpateLink();
