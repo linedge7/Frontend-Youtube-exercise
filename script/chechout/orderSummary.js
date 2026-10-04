@@ -12,6 +12,7 @@ import {
   deliverOptions,
   getDeliveryOption,
 } from "../../data/deliveryOptions.js";
+import renderPaymentSummary from "./paymentSummary.js";
 
 export function renderOrderSummary() {
   e14_updateCartQuantity();
@@ -132,6 +133,8 @@ export function renderOrderSummary() {
 
       container.remove();
 
+      renderPaymentSummary();
+
       // ######################## exercise 14 #######################
       e14_updateCartQuantity();
     });
@@ -142,6 +145,7 @@ export function renderOrderSummary() {
       const { productId, deliveryOptionId } = element.dataset;
       updateDeliveryOption(productId, deliveryOptionId);
       renderOrderSummary();
+      renderPaymentSummary();
     });
   });
   e14_codeUpdForUpateLink();
