@@ -4,15 +4,16 @@ import {
   removeFromCart,
   updateDeliveryOption,
 } from "../../data/cart.js";
-import { products, getProduct } from "../../data/products.js";
+import { getProduct } from "../../data/products.js";
 import { e14_codeUpdForUpateLink } from "../../exercise folder/e_14.js";
 import { formatCurrency } from "../utils/money.js";
-import dayjs from "../../lib/day.js";
 import {
+  calculateDeliveryDate,
   deliverOptions,
   getDeliveryOption,
 } from "../../data/deliveryOptions.js";
 import renderPaymentSummary from "./paymentSummary.js";
+import { renderCheckoutHeader } from "./checkoutHearder.js";
 
 export function renderOrderSummary() {
   e14_updateCartQuantity();
@@ -25,10 +26,7 @@ export function renderOrderSummary() {
 
     const matchingProduct = getProduct(productId);
     const deliveryOption = getDeliveryOption(deliveryOptionId);
-
-    const today = dayjs();
-    const deliveryDate = today.add(deliveryOption.deliveryDays, "days");
-    const dateString = deliveryDate.format("dddd, MMMM D");
+    const dateString = calculateDeliveryDate(deliveryOption);
 
     cartSummaryHTML += `
       <div class="cart-item-container js-cart-item-container-${matchingProduct.id}">
@@ -81,9 +79,7 @@ export function renderOrderSummary() {
     let html = "";
 
     deliverOptions.forEach((deliverOption) => {
-      const today = dayjs();
-      const deliveryDate = today.add(deliverOption.deliveryDays, "days");
-      const dateString = deliveryDate.format("dddd, MMMM D");
+      const dateString = calculateDeliveryDate(deliverOption);
 
       const priceString =
         deliverOption.priceCents === 0
@@ -127,13 +123,9 @@ export function renderOrderSummary() {
       const productId = link.dataset.productId;
       removeFromCart(productId);
 
-      const container = document.querySelector(
-        `.js-cart-item-container-${productId}`,
-      );
-
-      container.remove();
-
+      renderOrderSummary();
       renderPaymentSummary();
+      renderCheckoutHeader();
 
       // ######################## exercise 14 #######################
       e14_updateCartQuantity();

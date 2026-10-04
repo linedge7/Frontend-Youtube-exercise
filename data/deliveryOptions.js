@@ -1,4 +1,6 @@
- export const deliverOptions = [
+import dayjs from "../lib/day.js";
+
+export const deliverOptions = [
   {
     id: "1",
     deliveryDays: 7,
@@ -26,4 +28,13 @@ export function getDeliveryOption(deliveryOptionId) {
   });
 
   return deliveryOption || deliverOptions[0];
+}
+
+export function calculateDeliveryDate(deliveryOption) {
+  const today = dayjs();
+
+  const deliveryDate = today.add(deliveryOption.deliveryDays, "days");
+  const dateString = deliveryDate.format("dddd, MMMM D");
+
+  return dateString;
 }
