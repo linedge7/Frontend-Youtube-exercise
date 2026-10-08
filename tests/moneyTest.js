@@ -1,4 +1,4 @@
-import { formatCurrency } from "../script/utils/money.js";
+import { formatCurrency } from "../../script/utils/money.js";
 
 console.log("test suite: formatCurrency");
 console.log("converts cents into dallars");
